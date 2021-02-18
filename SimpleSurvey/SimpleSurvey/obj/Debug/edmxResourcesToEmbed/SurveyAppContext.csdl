@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SurveyAppModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="SurveyAppConString" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Questions" EntityType="SurveyAppModel.Question" />
+    <EntitySet Name="Roles" EntityType="SurveyAppModel.Role" />
+    <EntitySet Name="Surveys" EntityType="SurveyAppModel.Survey" />
+    <EntitySet Name="sysdiagrams" EntityType="SurveyAppModel.sysdiagram" />
+    <EntitySet Name="Users" EntityType="SurveyAppModel.User" />
+    <AssociationSet Name="FK_Users_Roles" Association="SurveyAppModel.FK_Users_Roles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Surveys_Users" Association="SurveyAppModel.FK_Surveys_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Surveys" EntitySet="Surveys" />
+    </AssociationSet>
+    <EntitySet Name="Survey_Response" EntityType="SurveyAppModel.Survey_Response" />
+    <EntitySet Name="SurveyQuestions" EntityType="SurveyAppModel.SurveyQuestion" />
+    <AssociationSet Name="FK_Survey_Response_Questions" Association="SurveyAppModel.FK_Survey_Response_Questions">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="Survey_Response" EntitySet="Survey_Response" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SurveyQuestions_Questions" Association="SurveyAppModel.FK_SurveyQuestions_Questions">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="SurveyQuestion" EntitySet="SurveyQuestions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Survey_Response_Surveys" Association="SurveyAppModel.FK_Survey_Response_Surveys">
+      <End Role="Survey" EntitySet="Surveys" />
+      <End Role="Survey_Response" EntitySet="Survey_Response" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Survey_Response_Users" Association="SurveyAppModel.FK_Survey_Response_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Survey_Response" EntitySet="Survey_Response" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SurveyQuestions_Surveys" Association="SurveyAppModel.FK_SurveyQuestions_Surveys">
+      <End Role="Survey" EntitySet="Surveys" />
+      <End Role="SurveyQuestion" EntitySet="SurveyQuestions" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Question">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Text" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="QuestionType" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="Options" Type="String" Nullable="false" MaxLength="2000" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="Survey_Response" Relationship="SurveyAppModel.FK_Survey_Response_Questions" FromRole="Question" ToRole="Survey_Response" />
+    <NavigationProperty Name="SurveyQuestions" Relationship="SurveyAppModel.FK_SurveyQuestions_Questions" FromRole="Question" ToRole="SurveyQuestion" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="Users" Relationship="SurveyAppModel.FK_Users_Roles" FromRole="Roles" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Survey">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" />
+    <Property Name="ExpiresOn" Type="DateTime" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="Publish" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="SurveyAppModel.FK_Surveys_Users" FromRole="Surveys" ToRole="Users" />
+    <NavigationProperty Name="Survey_Response" Relationship="SurveyAppModel.FK_Survey_Response_Surveys" FromRole="Survey" ToRole="Survey_Response" />
+    <NavigationProperty Name="SurveyQuestions" Relationship="SurveyAppModel.FK_SurveyQuestions_Surveys" FromRole="Survey" ToRole="SurveyQuestion" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="LastName" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="Role" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Role1" Relationship="SurveyAppModel.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
+    <NavigationProperty Name="Surveys" Relationship="SurveyAppModel.FK_Surveys_Users" FromRole="Users" ToRole="Surveys" />
+    <NavigationProperty Name="Survey_Response" Relationship="SurveyAppModel.FK_Survey_Response_Users" FromRole="User" ToRole="Survey_Response" />
+  </EntityType>
+  <Association Name="FK_Users_Roles">
+    <End Role="Roles" Type="SurveyAppModel.Role" Multiplicity="1" />
+    <End Role="Users" Type="SurveyAppModel.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="Role" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Surveys_Users">
+    <End Role="Users" Type="SurveyAppModel.User" Multiplicity="1" />
+    <End Role="Surveys" Type="SurveyAppModel.Survey" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Surveys">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Survey_Response">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="SurveyID" Nullable="false" />
+    <Property Type="Int32" Name="QuestionID" Nullable="false" />
+    <Property Type="String" Name="Response" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="FilledBy" Nullable="false" />
+    <NavigationProperty Name="Question" Relationship="SurveyAppModel.FK_Survey_Response_Questions" FromRole="Survey_Response" ToRole="Question" />
+    <NavigationProperty Name="Survey" Relationship="SurveyAppModel.FK_Survey_Response_Surveys" FromRole="Survey_Response" ToRole="Survey" />
+    <NavigationProperty Name="User" Relationship="SurveyAppModel.FK_Survey_Response_Users" FromRole="Survey_Response" ToRole="User" />
+  </EntityType>
+  <EntityType Name="SurveyQuestion">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="SurveyID" Nullable="false" />
+    <Property Type="Int32" Name="QuestionID" Nullable="false" />
+    <Property Type="Int32" Name="OrderID" />
+    <NavigationProperty Name="Question" Relationship="SurveyAppModel.FK_SurveyQuestions_Questions" FromRole="SurveyQuestion" ToRole="Question" />
+    <NavigationProperty Name="Survey" Relationship="SurveyAppModel.FK_SurveyQuestions_Surveys" FromRole="SurveyQuestion" ToRole="Survey" />
+  </EntityType>
+  <Association Name="FK_Survey_Response_Questions">
+    <End Type="SurveyAppModel.Question" Role="Question" Multiplicity="1" />
+    <End Type="SurveyAppModel.Survey_Response" Role="Survey_Response" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Survey_Response">
+        <PropertyRef Name="QuestionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SurveyQuestions_Questions">
+    <End Type="SurveyAppModel.Question" Role="Question" Multiplicity="1" />
+    <End Type="SurveyAppModel.SurveyQuestion" Role="SurveyQuestion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="SurveyQuestion">
+        <PropertyRef Name="QuestionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Survey_Response_Surveys">
+    <End Type="SurveyAppModel.Survey" Role="Survey" Multiplicity="1" />
+    <End Type="SurveyAppModel.Survey_Response" Role="Survey_Response" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Survey">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Survey_Response">
+        <PropertyRef Name="SurveyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Survey_Response_Users">
+    <End Type="SurveyAppModel.User" Role="User" Multiplicity="1" />
+    <End Type="SurveyAppModel.Survey_Response" Role="Survey_Response" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Survey_Response">
+        <PropertyRef Name="FilledBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SurveyQuestions_Surveys">
+    <End Type="SurveyAppModel.Survey" Role="Survey" Multiplicity="1" />
+    <End Type="SurveyAppModel.SurveyQuestion" Role="SurveyQuestion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Survey">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="SurveyQuestion">
+        <PropertyRef Name="SurveyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

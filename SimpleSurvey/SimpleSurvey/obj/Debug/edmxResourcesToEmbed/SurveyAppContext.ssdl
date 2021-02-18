@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SurveyAppModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="SurveyAppModelStoreContainer">
+    <EntitySet Name="Questions" EntityType="SurveyAppModel.Store.Questions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Roles" EntityType="SurveyAppModel.Store.Roles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Survey_Response" EntityType="SurveyAppModel.Store.Survey_Response" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SurveyQuestions" EntityType="SurveyAppModel.Store.SurveyQuestions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Surveys" EntityType="SurveyAppModel.Store.Surveys" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="sysdiagrams" EntityType="SurveyAppModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="SurveyAppModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Survey_Response_Questions" Association="SurveyAppModel.Store.FK_Survey_Response_Questions">
+      <End Role="Questions" EntitySet="Questions" />
+      <End Role="Survey_Response" EntitySet="Survey_Response" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Survey_Response_Surveys" Association="SurveyAppModel.Store.FK_Survey_Response_Surveys">
+      <End Role="Surveys" EntitySet="Surveys" />
+      <End Role="Survey_Response" EntitySet="Survey_Response" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Survey_Response_Users" Association="SurveyAppModel.Store.FK_Survey_Response_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Survey_Response" EntitySet="Survey_Response" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SurveyQuestions_Questions" Association="SurveyAppModel.Store.FK_SurveyQuestions_Questions">
+      <End Role="Questions" EntitySet="Questions" />
+      <End Role="SurveyQuestions" EntitySet="SurveyQuestions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SurveyQuestions_Surveys" Association="SurveyAppModel.Store.FK_SurveyQuestions_Surveys">
+      <End Role="Surveys" EntitySet="Surveys" />
+      <End Role="SurveyQuestions" EntitySet="SurveyQuestions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Surveys_Users" Association="SurveyAppModel.Store.FK_Surveys_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Surveys" EntitySet="Surveys" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_Roles" Association="SurveyAppModel.Store.FK_Users_Roles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Questions">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Text" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="QuestionType" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="Options" Type="varchar" Nullable="false" MaxLength="2000" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="Survey_Response">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="SurveyID" Type="int" Nullable="false" />
+    <Property Name="QuestionID" Type="int" Nullable="false" />
+    <Property Name="Response" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="FilledBy" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SurveyQuestions">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="SurveyID" Type="int" Nullable="false" />
+    <Property Name="QuestionID" Type="int" Nullable="false" />
+    <Property Name="OrderID" Type="int" />
+  </EntityType>
+  <EntityType Name="Surveys">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="varchar" MaxLength="200" />
+    <Property Name="Description" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+    <Property Name="ExpiresOn" Type="datetime" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="Publish" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="LastName" Type="varchar" MaxLength="200" />
+    <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="Role" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Survey_Response_Questions">
+    <End Role="Questions" Type="SurveyAppModel.Store.Questions" Multiplicity="1" />
+    <End Role="Survey_Response" Type="SurveyAppModel.Store.Survey_Response" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questions">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Survey_Response">
+        <PropertyRef Name="QuestionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Survey_Response_Surveys">
+    <End Role="Surveys" Type="SurveyAppModel.Store.Surveys" Multiplicity="1" />
+    <End Role="Survey_Response" Type="SurveyAppModel.Store.Survey_Response" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Surveys">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Survey_Response">
+        <PropertyRef Name="SurveyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Survey_Response_Users">
+    <End Role="Users" Type="SurveyAppModel.Store.Users" Multiplicity="1" />
+    <End Role="Survey_Response" Type="SurveyAppModel.Store.Survey_Response" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Survey_Response">
+        <PropertyRef Name="FilledBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SurveyQuestions_Questions">
+    <End Role="Questions" Type="SurveyAppModel.Store.Questions" Multiplicity="1" />
+    <End Role="SurveyQuestions" Type="SurveyAppModel.Store.SurveyQuestions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questions">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="SurveyQuestions">
+        <PropertyRef Name="QuestionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SurveyQuestions_Surveys">
+    <End Role="Surveys" Type="SurveyAppModel.Store.Surveys" Multiplicity="1" />
+    <End Role="SurveyQuestions" Type="SurveyAppModel.Store.SurveyQuestions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Surveys">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="SurveyQuestions">
+        <PropertyRef Name="SurveyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Surveys_Users">
+    <End Role="Users" Type="SurveyAppModel.Store.Users" Multiplicity="1" />
+    <End Role="Surveys" Type="SurveyAppModel.Store.Surveys" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Surveys">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_Roles">
+    <End Role="Roles" Type="SurveyAppModel.Store.Roles" Multiplicity="1" />
+    <End Role="Users" Type="SurveyAppModel.Store.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="Role" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" ReturnType="int" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+</Schema>
